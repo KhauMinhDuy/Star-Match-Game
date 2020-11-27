@@ -53,7 +53,8 @@ class StarMatch extends Component {
                         {utils.range(1, this.state.stars).map(number => <StarDisplay key={number} number={number}/>)}
                     </div>
                     <div className="right">
-                        {utils.range(1, 9).map(number => <PlayNumber key={number} status={this.numberStatus(number)} number={number}/>)}
+                        {utils.range(1, 9).map(number => <PlayNumber key={number} status={this.numberStatus(number)}
+                                                                     number={number} onClick={this.onNumberClick}/>)}
                     </div>
                 </div>
                 <div className="timer">Time Remaining: 10</div>
@@ -71,7 +72,35 @@ class StarMatch extends Component {
         }
         return 'available';
     };
+
+    onNumberClick = (number, currentStatus) => {
+        if (currentStatus === 'used') {
+            return;
+        }
+
+        const newCandidateNums =
+            currentStatus === 'available'
+                ? this.state.candidateNums.concat(number)
+                : this.state.candidateNums.filter(cn => cn !== number);
+
+        if (utils.sum(newCandidateNums) !== this.state.stars) {
+            this.setState({
+                candidateNums: newCandidateNums
+            });
+        } else {
+            const newAvailableNums = this.state.availableNums.filter(
+                n => !newCandidateNums.includes(n)
+            );
+            this.setState({
+                stars: utils.randomSumIn(newAvailableNums, 9),
+                availableNums: newAvailableNums,
+                candidateNums: []
+            });
+        }
+    };
 }
+
+
 
 
 export default StarMatch;
