@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PlayNumber from "./PlayNumber";
 import StarDisplay from "./StarDisplay";
+import PlayAgain from "./PlayAgain";
 
 const utils = {
     // Sum an array
@@ -42,6 +43,14 @@ class StarMatch extends Component {
         };
     }
 
+    resetGame = () => {
+        this.setState({
+            stars: utils.random(1, 9),
+            availableNums: utils.range(1, 9),
+            candidateNums: []
+        });
+    };
+
     render() {
         return (
             <div className="game">
@@ -50,7 +59,11 @@ class StarMatch extends Component {
                 </div>
                 <div className="body">
                     <div className="left">
-                        {utils.range(1, this.state.stars).map(number => <StarDisplay key={number} number={number}/>)}
+                        {this.state.availableNums.length === 0 ?
+                            (<PlayAgain onClick={this.resetGame}/>) :
+                            (<StarDisplay count={this.state.stars}/>)
+
+                        }
                     </div>
                     <div className="right">
                         {utils.range(1, 9).map(number => <PlayNumber key={number} status={this.numberStatus(number)}
@@ -99,8 +112,6 @@ class StarMatch extends Component {
         }
     };
 }
-
-
 
 
 export default StarMatch;

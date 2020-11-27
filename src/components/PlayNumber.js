@@ -9,7 +9,8 @@ class PlayNumber extends Component {
     render() {
         return (
             <div>
-                <button style={{backgroundColor: colors[this.props.status]}} onClick={() => this.props.onClick(this.props.number, this.props.status)} key={this.props.number}
+                <button style={{backgroundColor: colors[this.props.status]}}
+                        onClick={() => this.props.onClick(this.props.number, this.props.status)} key={this.props.number}
                         className='number'>{this.props.number}</button>
             </div>
         );
